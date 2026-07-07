@@ -1,12 +1,30 @@
-// https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+const youtubeVideoIdPattern = /^[A-Za-z0-9_-]{6,}$/;
+
 export function getYoutubeIdFromUrl(url) {
     if (!url) {
         return '';
     }
 
-    return String(url).match(
-        /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/,
-    )?.[1] ?? '';
+    try {
+        const parsedUrl = new URL(String(url));
+        const host = parsedUrl.hostname.replace(/^www\./, '').toLowerCase();
+        const pathSegments = parsedUrl.pathname.split('/').filter(Boolean);
+        let id = '';
+
+        if (host === 'youtu.be') {
+            id = pathSegments[0] || '';
+        } else if (host === 'youtube.com' || host === 'm.youtube.com') {
+            if (parsedUrl.pathname === '/watch') {
+                id = parsedUrl.searchParams.get('v') || '';
+            } else if (['embed', 'shorts', 'v'].includes(pathSegments[0])) {
+                id = pathSegments[1] || '';
+            }
+        }
+
+        return youtubeVideoIdPattern.test(id) ? id : '';
+    } catch {
+        return '';
+    }
 }
 
 export function embed(video) {

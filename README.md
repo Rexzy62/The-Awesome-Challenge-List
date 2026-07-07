@@ -57,8 +57,8 @@ include:
 - `password`
 - `records`
 
-Use a real YouTube URL for `verification` whenever possible. If a level is
-approved before the video is ready, `SOON` is accepted as a temporary
+Use an embeddable YouTube video URL for `verification` whenever possible. If a
+level is approved before the video is ready, `SOON` is accepted as a temporary
 placeholder; the level will show a coming-soon video state and will be skipped
 by roulette until a playable video is added.
 
@@ -79,9 +79,9 @@ python3 scripts/validate_data.py
 ```
 
 The validator checks listed level files, required fields, record percentages,
-Hz values, YouTube links, editor roles, duplicate listed levels, and malformed
-JSON. It reports extra unlisted level files as warnings so drafts can live in
-the repository without breaking the site.
+Hz values, embeddable YouTube video links, editor roles, duplicate listed
+levels, and malformed JSON. It reports extra unlisted level files as warnings
+so drafts can live in the repository without breaking the site.
 
 The same validation runs in GitHub Actions on pushes and pull requests.
 

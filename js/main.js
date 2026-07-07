@@ -1,4 +1,5 @@
 import routes from './routes.js';
+import { SITE_VERSION } from './site-meta.js';
 import { getStoredDarkMode, setStoredDarkMode } from './theme.js';
 
 export const store = Vue.reactive({
@@ -10,7 +11,10 @@ export const store = Vue.reactive({
 });
 
 const app = Vue.createApp({
-    data: () => ({ store }),
+    data: () => ({
+        siteVersion: SITE_VERSION,
+        store,
+    }),
 });
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),

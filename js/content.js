@@ -28,34 +28,47 @@ function getCanonicalName(map, name) {
     ) || name;
 }
 
+async function fetchJson(path) {
+    const response = await fetch(path);
+    if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
+}
+
 export async function fetchList() {
     try {
-        const listResult = await fetch(`${dir}/_list.json`);
-        const list = await listResult.json();
+        const list = await fetchJson(`${dir}/_list.json`);
+        if (!Array.isArray(list)) {
+            throw new Error("_list.json must contain an array.");
+        }
+
         return await Promise.all(
             list.map(async (path, rank) => {
                 try {
-                    const levelResult = await fetch(`${dir}/${path}.json`);
-                    const level = await levelResult.json();
+                    const level = await fetchJson(`${dir}/${path}.json`);
                     return [normalizeLevel(level, path), null];
-                } catch {
-                    console.error(`Failed to load level #${rank + 1} ${path}.`);
+                } catch (error) {
+                    console.error(
+                        `Failed to load level #${rank + 1} ${path}.`,
+                        error,
+                    );
                     return [null, path];
                 }
             }),
         );
-    } catch {
-        console.error(`Failed to load list.`);
+    } catch (error) {
+        console.error(`Failed to load list.`, error);
         return null;
     }
 }
 
 export async function fetchEditors() {
     try {
-        const editorsResults = await fetch(`${dir}/_editors.json`);
-        const editors = await editorsResults.json();
-        return editors;
-    } catch {
+        return await fetchJson(`${dir}/_editors.json`);
+    } catch (error) {
+        console.error(`Failed to load editors.`, error);
         return null;
     }
 }

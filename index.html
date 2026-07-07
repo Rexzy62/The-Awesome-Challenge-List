@@ -31,15 +31,23 @@
             type="text/css"
             href="/css/components/tabs.css"
         />
-        <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
-        <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
+        <script
+            src="https://unpkg.com/vue@3.2.31/dist/vue.global.prod.js"
+            integrity="sha256-2ndwnHC+N2Yt4HwOAdoyAb6R6u9Ddt+R3TBGij6U35Q="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"
+            integrity="sha256-vgK1JbT4ehs70XoL7m0MYISjBTgDX2SLNn+XT2EaqWA="
+            crossorigin="anonymous"
+        ></script>
         <script type="module" src="/js/main.js"></script>
     </head>
     <body id="app">
         <header :class="{ dark: store.dark }">
             <div class="logo">
                 <h2>TaCL</h2>
-                <p>v2.01.5.</p>
+                <p>{{ siteVersion }}</p>
             </div>
             <nav class="nav">
                 <router-link class="nav__tab" to="/">

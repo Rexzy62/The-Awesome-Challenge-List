@@ -4,13 +4,13 @@
     "author": "Creator",
     "creators": ["Collaborators"],
     "verifier": "Verifier",
-    "verification": "https://www.youtube.com/temp",
+    "verification": "https://youtu.be/abcdefghijk",
     "percentToQualify": "100",
     "password": "Uncopylocked",
     "records": [
             {
             "user": "victor",
-            "link": "https://www.youtube.com/Temp",
+            "link": "https://youtu.be/abcdefghijk",
             "percent": 100,
             "hz": 60
             }

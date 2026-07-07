@@ -8,6 +8,7 @@ import re
 import sys
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,9 +19,10 @@ VALID_EDITOR_ROLES = {"owner", "admin", "helper", "dev", "trial"}
 PENDING_VIDEO_VALUES = {"soon", "tba", "pending"}
 URL_RE = re.compile(r"^https?://", re.IGNORECASE)
 YOUTUBE_RE = re.compile(
-    r"^https?://(?:www\.)?(?:youtube\.com|youtu\.be)/",
+    r"^https?://(?:(?:www\.)?youtu\.be|(?:(?:www|m)\.)?youtube\.com)/",
     re.IGNORECASE,
 )
+YOUTUBE_VIDEO_ID_RE = re.compile(r"^[A-Za-z0-9_-]{6,}$")
 
 errors: list[str] = []
 warnings: list[str] = []
@@ -61,12 +63,33 @@ def as_number(value: Any) -> float | None:
     return None
 
 
+def get_youtube_video_id(value: str) -> str | None:
+    parsed = urlparse(value)
+    host = parsed.netloc.lower()
+    if host.startswith("www."):
+        host = host[4:]
+
+    path_segments = [segment for segment in parsed.path.split("/") if segment]
+    video_id = ""
+
+    if host == "youtu.be":
+        video_id = path_segments[0] if path_segments else ""
+    elif host in {"youtube.com", "m.youtube.com"}:
+        if parsed.path == "/watch":
+            video_id = parse_qs(parsed.query).get("v", [""])[0]
+        elif path_segments and path_segments[0] in {"embed", "shorts", "v"}:
+            video_id = path_segments[1] if len(path_segments) > 1 else ""
+
+    return video_id if YOUTUBE_VIDEO_ID_RE.fullmatch(video_id) else None
+
+
 def validate_url(
     path: Path,
     field: str,
     value: Any,
     youtube: bool = False,
     allow_pending: bool = False,
+    require_video_id: bool = False,
 ) -> None:
     if not is_non_empty_string(value):
         errors.append(f"{location(path)}: {field} must be a non-empty URL string.")
@@ -79,6 +102,16 @@ def validate_url(
     pattern = YOUTUBE_RE if youtube else URL_RE
     if not pattern.search(value):
         errors.append(f"{location(path)}: {field} must be a valid URL.")
+        return
+
+    if youtube and not get_youtube_video_id(value):
+        message = (
+            f"{location(path)}: {field} should be an embeddable YouTube video URL."
+        )
+        if require_video_id:
+            errors.append(message)
+        else:
+            warnings.append(message)
 
 
 def validate_record(path: Path, rank: int, record: Any, index: int) -> str | None:
@@ -137,9 +170,16 @@ def validate_level(slug: str, rank: int) -> None:
         level.get("verification"),
         youtube=True,
         allow_pending=True,
+        require_video_id=True,
     )
     if level.get("showcase"):
-        validate_url(path, "showcase", level.get("showcase"), youtube=True)
+        validate_url(
+            path,
+            "showcase",
+            level.get("showcase"),
+            youtube=True,
+            require_video_id=True,
+        )
 
     percent_to_qualify = as_number(level.get("percentToQualify"))
     if percent_to_qualify is None or percent_to_qualify <= 0 or percent_to_qualify > 100:
