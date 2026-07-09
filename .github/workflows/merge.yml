@@ -16,14 +16,23 @@ jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Merge main into production
+        shell: bash
         run: |
+          set -euo pipefail
+
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git fetch origin main production
-          git checkout -B production origin/production
-          git merge origin/main --no-ff --no-edit
-          git push origin production
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+
+          if git show-ref --verify --quiet refs/remotes/origin/production; then
+            git checkout -B production origin/production
+            git merge origin/main --no-ff --no-edit
+          else
+            git checkout -B production origin/main
+          fi
+
+          git push --set-upstream origin production
