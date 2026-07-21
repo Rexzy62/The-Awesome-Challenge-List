@@ -8,6 +8,11 @@
     "percentToQualify": "100",
     "password": "Uncopylocked",
     "records": [
-
+            {
+            "user": "zerobigcat",
+            "link": "",
+            "percent": 100,
+            "hz": 240
+            }
     ]
 }
