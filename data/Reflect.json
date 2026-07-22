@@ -3,16 +3,10 @@
     "name": "Reflect",
     "author": "MRCL.",
     "creators": ["MRCL."],
-    "verifier": "Rexzy",
-    "verification": "https://youtu.be/ozyXT0rhOcg",
+    "verifier": "zerobigcat",
+    "verification": "https://youtu.be/RaHZ1gNWvFM",
     "percentToQualify": "100",
     "password": "Uncopylocked",
     "records": [
-            {
-            "user": "Rexzy",
-            "link": "https://youtu.be/ozyXT0rhOcg",
-            "percent": 100,
-            "hz": 480
-            }
     ]
 }
