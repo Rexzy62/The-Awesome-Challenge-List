@@ -8,5 +8,11 @@
     "percentToQualify": "100",
     "password": "Uncopylocked",
     "records": [
+            {
+            "user": "Rexzy",
+            "link": "https://youtu.be/FN9DntRTnt0",
+            "percent": 100,
+            "hz": 360
+            }
     ]
 }
