@@ -20,13 +20,13 @@ This is a static site, but it should be served through a local web server so
 browser module imports and JSON fetches work correctly.
 
 ```bash
-python3 -m http.server 8000
+python -m http.server 8000
 ```
 
 Then open:
 
 ```text
-http://localhost:8000
+http://127.0.0.1:8000
 ```
 
 ## Editing list data (in forked repos etc.)
