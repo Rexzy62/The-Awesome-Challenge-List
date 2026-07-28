@@ -1,0 +1,12 @@
+{
+    "id": 123456789,
+    "name": "Twilight",
+    "author": "Rexzy",
+    "creators": ["Rexzy"],
+    "verifier": "Rexzy",
+    "verification": "https://youtu.be/b5YP1zbpgoo",
+    "percentToQualify": "100",
+    "password": "Uncopylocked",
+    "records": [
+    ]
+}

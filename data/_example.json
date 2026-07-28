@@ -3,7 +3,7 @@
     "name": "Level Name",
     "author": "Creator",
     "creators": ["Collaborators"],
-    "verifier": "Verifier",
+    "verifier": "verifier",
     "verification": "https://youtu.be/abcdefghijk",
     "percentToQualify": "100",
     "password": "Uncopylocked",
