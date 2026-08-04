@@ -1,23 +1,13 @@
 [
     {
         "role": "owner",
-        "name": "AcL",
-        "link": "https://gdbrowser.com/u/ACapitalLGD%20"
+        "name": "Rexzy",
+        "link": "https://github.com/Rexzy67"
     },
     {
         "role": "admin",
         "name": "Blaze",
         "link": "https://guns.lol/twelvvblaze"
-    },
-    {
-        "role": "helper",
-        "name": "Rexzy",
-        "link": "https://github.com/Rexzy67"
-    },
-    {
-        "role": "trial",
-        "name": "Trial List Helper",
-        "link": ""
     },
     {
         "role": "dev",

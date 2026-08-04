@@ -140,6 +140,26 @@ export default {
                     <div class="og">
                         <p class="type-label-md">Website layout made by <a href="https://tsl.pages.dev/" target="_blank" rel="noopener noreferrer">TheShittyList</a></p>
                     </div>
+                    <section class="discord-widget" aria-labelledby="discord-widget-title">
+                        <a
+                            class="discord-widget__header"
+                            href="https://discord.gg/bGdP4F2nKu"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <p class="type-label-md">Community</p>
+                            <h3 id="discord-widget-title">TaCL Discord</h3>
+                        </a>
+                        <iframe
+                            src="https://discord.com/widget?id=1533608076064718928&theme=dark"
+                            title="TaCL Discord invite widget"
+                            width="350"
+                            height="500"
+                            allowtransparency="true"
+                            frameborder="0"
+                            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                        ></iframe>
+                    </section>
                     <template v-if="editors">
                         <h3>List Editors</h3>
                         <ol class="editors">
