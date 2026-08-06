@@ -5,9 +5,16 @@ async function request(path, options = {}) {
         ...options,
         body: options.body ? JSON.stringify(options.body) : undefined,
     });
-    const data = response.status === 204 ? null : await response.json().catch(() => null);
+    const raw = response.status === 204 ? '' : await response.text();
+    let data = null;
+    try {
+        data = raw ? JSON.parse(raw) : null;
+    } catch {
+        // Vercel can return an HTML error page when a function crashes before
+        // the application handler has a chance to send JSON.
+    }
     if (!response.ok) {
-        throw new Error(data?.error || 'Something went wrong. Please try again.');
+        throw new Error(data?.error || `Request failed (HTTP ${response.status}). Check the Vercel Runtime Logs for this request.`);
     }
     return data;
 }
