@@ -1,0 +1,279 @@
+.account-page {
+    display: block;
+    height: auto;
+    min-height: calc(100vh - 4.5rem);
+    overflow: visible;
+    padding: 3rem max(1rem, calc(50vw - 31rem));
+}
+
+.account-panel {
+    width: min(100%, 52rem);
+    margin: 0 auto 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    background: var(--gradient-acrylic);
+    border: var(--glass-border);
+    border-radius: calc(var(--radius-panel) + 0.25rem);
+    box-shadow: var(--shadow-glass);
+    -webkit-backdrop-filter: var(--effect-acrylic);
+    backdrop-filter: var(--effect-acrylic);
+}
+
+.page-heading {
+    margin-bottom: 1.75rem;
+}
+
+.page-heading h1,
+.page-heading h2 {
+    margin: 0.3rem 0 0.75rem;
+}
+
+.page-heading p:not(.eyebrow) {
+    color: var(--color-muted);
+    line-height: 1.55;
+    max-width: 46rem;
+}
+
+.eyebrow {
+    color: var(--color-secondary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.app-form {
+    display: grid;
+    gap: 1.15rem;
+}
+
+.app-form label,
+.review-card label {
+    display: grid;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+.app-form small,
+.review-card small {
+    color: var(--color-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.app-form em,
+.review-card em {
+    color: var(--color-muted);
+    font-size: 0.84em;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.app-form input:not([type="checkbox"]),
+.app-form textarea,
+.review-card textarea,
+.user-search input,
+.compact-label select,
+.submission-table select {
+    width: 100%;
+    min-width: 0;
+    border: var(--glass-border);
+    border-radius: var(--radius-control);
+    background: var(--gradient-acrylic);
+    color: var(--color-on-background);
+    padding: 0.75rem;
+    box-shadow: var(--shadow-inset);
+    font: inherit;
+    -webkit-backdrop-filter: var(--effect-acrylic);
+    backdrop-filter: var(--effect-acrylic);
+}
+
+.app-form textarea,
+.review-card textarea {
+    line-height: 1.45;
+    resize: vertical;
+}
+
+.app-form input:focus,
+.app-form textarea:focus,
+.review-card textarea:focus,
+.user-search input:focus {
+    background: color-mix(in srgb, var(--color-surface-strong) 78%, transparent);
+}
+
+.primary-button,
+.danger-button,
+.text-button,
+.auth-tabs button {
+    border-radius: var(--radius-control);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.primary-button,
+.danger-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-height: 2.75rem;
+    padding: 0.7rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--color-secondary) 46%, transparent);
+    background: var(--gradient-active);
+    box-shadow: var(--shadow-sm);
+    color: white;
+}
+
+.danger-button {
+    border-color: color-mix(in srgb, var(--color-error) 50%, transparent);
+    background: var(--gradient-danger);
+}
+
+.primary-button:hover:not(:disabled),
+.danger-button:hover:not(:disabled),
+.text-button:hover,
+.auth-tabs button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.primary-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.62;
+}
+
+.text-button {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 2.75rem;
+    padding: 0.65rem 0.9rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-on-background);
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.form-message {
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-control);
+    line-height: 1.4;
+}
+
+.form-message.error {
+    background: color-mix(in srgb, var(--color-error) 15%, var(--color-surface));
+    border: 1px solid color-mix(in srgb, var(--color-error) 45%, transparent);
+    color: var(--color-error);
+}
+
+.form-message.success {
+    background: color-mix(in srgb, var(--color-secondary) 14%, var(--color-surface));
+    border: 1px solid color-mix(in srgb, var(--color-secondary) 42%, transparent);
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.3rem;
+    margin-bottom: 1.4rem;
+    background: color-mix(in srgb, var(--color-surface-muted) 72%, transparent);
+    border: var(--glass-border);
+    border-radius: var(--radius-control);
+}
+
+.auth-tabs button {
+    flex: 1;
+    padding: 0.65rem;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-muted);
+}
+
+.auth-tabs button.active {
+    background: var(--gradient-active);
+    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+    display: grid;
+    place-items: center;
+    flex: 0 0 4rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--gradient-active);
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.profile-hero h1 { margin: 0.2rem 0; }
+.muted { color: var(--color-muted); }
+.profile-bio { line-height: 1.6; white-space: pre-wrap; margin-bottom: 1.5rem; }
+
+.featured-completion {
+    padding: 1.15rem;
+    margin-bottom: 1.5rem;
+    background: color-mix(in srgb, var(--color-secondary) 11%, var(--color-surface));
+    border: 1px solid color-mix(in srgb, var(--color-secondary) 36%, var(--color-border));
+    border-radius: var(--radius-panel);
+}
+
+.featured-completion h2 { margin: 0.35rem 0 0.65rem; }
+.featured-completion a,
+.profile-completions a,
+.review-fields a { color: var(--color-secondary); font-weight: 700; }
+
+.profile-completions,
+.submission-table { width: 100%; border-collapse: collapse; }
+.profile-completions tr,
+.submission-table tr { border-top: 1px solid var(--color-border); }
+.profile-completions td,
+.submission-table td { padding: 0.8rem 0.6rem; vertical-align: top; }
+.profile-completions td:first-child { color: var(--color-muted); width: 4rem; }
+.profile-completions td:last-child { text-align: end; }
+
+.submission-panel + .submission-panel { margin-top: 0; }
+.status { display: inline-block; padding: 0.2rem 0.52rem; border-radius: 99px; background: var(--color-surface-muted); color: var(--color-muted); font-size: 0.78rem; font-weight: 700; text-transform: capitalize; }
+.status.pending { background: color-mix(in srgb, var(--color-warm) 24%, var(--color-surface)); color: color-mix(in srgb, var(--color-warm) 78%, var(--color-on-background)); }
+.status.approved { background: color-mix(in srgb, var(--color-secondary) 20%, var(--color-surface)); color: var(--color-secondary); }
+.status.rejected { background: color-mix(in srgb, var(--color-error) 17%, var(--color-surface)); color: var(--color-error); }
+
+.admin-page .account-panel { width: min(100%, 62rem); }
+.compact-label { display: grid; width: min(100%, 14rem); gap: 0.45rem; margin-bottom: 1.25rem; font-weight: 700; }
+.review-card { display: grid; gap: 0.9rem; padding: 1.25rem 0; border-top: 1px solid var(--color-border); }
+.review-title { display: flex; align-items: center; gap: 0.75rem; }
+.review-title h2 { margin: 0; font-size: 1.15rem; }
+.review-fields { display: grid; grid-template-columns: minmax(8rem, 0.5fr) 2fr; gap: 0.45rem 1rem; padding: 0.9rem; background: color-mix(in srgb, var(--color-surface-muted) 72%, transparent); border-radius: var(--radius-control); }
+.review-fields dt { color: var(--color-muted); font-weight: 700; }
+.review-fields dd { min-width: 0; overflow-wrap: anywhere; }
+.review-note { padding: 0.8rem; background: var(--color-surface-muted); border-radius: var(--radius-control); }
+.user-search { display: flex; gap: 0.6rem; margin-bottom: 1rem; }
+.user-search .text-button { flex: 0 0 auto; }
+
+@media screen and (max-width: 700px) {
+    .account-page { padding: 1rem; }
+    .account-panel { padding: 1.25rem; }
+    .submission-table td { padding-inline: 0.25rem; }
+    .review-fields { grid-template-columns: 1fr; gap: 0.25rem; }
+    .review-fields dt { margin-top: 0.45rem; }
+    .user-search { flex-direction: column; }
+}

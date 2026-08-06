@@ -87,6 +87,20 @@
     box-shadow: var(--shadow-inset), 0 1rem 2rem rgba(10, 24, 48, 0.26);
 }
 
+.nav .nav__actions .nav__signout {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-control);
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.92);
+    cursor: pointer;
+    font: inherit;
+    padding: 0.65rem 0.8rem;
+}
+
+.nav .nav__actions .nav__signout:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
 @media screen and (max-width: 700px) {
     .nav {
         column-gap: 0.35rem;
