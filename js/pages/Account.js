@@ -77,13 +77,13 @@ export default {
                     <button :class="{ active: mode === 'login' }" @click="mode = 'login'; error = ''">Sign in</button>
                     <button :class="{ active: mode === 'register' }" @click="mode = 'register'; error = ''">Register</button>
                 </div>
-                <form v-if="mode === 'login'" class="app-form" @submit.prevent="submitLogin">
+                <form v-if="mode === 'login'" class="app-form" novalidate @submit.prevent="submitLogin">
                     <label><span>Username or email</span><input v-model.trim="login.identifier" autocomplete="username" required></label>
                     <label><span>Password</span><input v-model="login.password" type="password" autocomplete="current-password" minlength="10" required></label>
                     <p v-if="error" class="form-message error">{{ error }}</p>
                     <button class="primary-button" :disabled="busy">{{ busy ? 'Signing in…' : 'Sign in' }}</button>
                 </form>
-                <form v-else class="app-form" @submit.prevent="submitRegistration">
+                <form v-else class="app-form" novalidate @submit.prevent="submitRegistration">
                     <label><span>Username</span><input v-model.trim="register.username" autocomplete="username" pattern="[A-Za-z0-9_-]{3,32}" required><small>3–32 letters, numbers, underscores, or hyphens.</small></label>
                     <label><span>Email</span><input v-model.trim="register.email" type="email" autocomplete="email" required></label>
                     <label><span>Password</span><input v-model="register.password" type="password" autocomplete="new-password" minlength="10" maxlength="128" required><small>At least 10 characters.</small></label>
