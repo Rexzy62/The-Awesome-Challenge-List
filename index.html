@@ -24,6 +24,7 @@
             href="/css/pages/leaderboard.css"
         />
         <link rel="stylesheet" type="text/css" href="/css/pages/roulette.css" />
+        <link rel="stylesheet" type="text/css" href="/css/pages/account.css" />
         <link rel="stylesheet" type="text/css" href="/css/components/nav.css" />
         <link rel="stylesheet" type="text/css" href="/css/components/btn.css" />
         <link
@@ -59,6 +60,12 @@
                 <router-link class="nav__tab" to="/roulette">
                     <span class="type-label-lg">Roulette</span>
                 </router-link>
+                <router-link class="nav__tab" to="/submit">
+                    <span class="type-label-lg">Submit</span>
+                </router-link>
+                <router-link v-if="store.user?.role === 'admin' || store.user?.role === 'moderator'" class="nav__tab" to="/admin">
+                    <span class="type-label-lg">Admin</span>
+                </router-link>
                 <a class="nav__tab" href="/docs/">
                     <span class="type-label-lg">Docs</span>
                 </a>
@@ -77,13 +84,13 @@
                     <a class="nav__icon" href="https://discord.gg/bGdP4F2nKu" target="_blank" rel="noopener noreferrer" aria-label="Join the Discord">
                         <img src="/assets/discord.svg" alt="Discord Logo" />
                     </a>
-                    <a
-                        class="nav__cta type-label-lg"
-                        href="https://discord.gg/bGdP4F2nKu"
-                        target="_blank"
-                        rel="noopener noreferrer">
-                        Submit Record
-                    </a>
+                    <router-link v-if="store.user" class="nav__cta type-label-lg" to="/account">
+                        {{ store.user.displayName || store.user.username }}
+                    </router-link>
+                    <router-link v-else class="nav__cta type-label-lg" to="/account">
+                        Sign in
+                    </router-link>
+                    <button v-if="store.user" class="nav__signout" type="button" @click="store.signOut()">Sign out</button>
                 </div>
             </nav>
         </header>

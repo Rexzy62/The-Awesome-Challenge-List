@@ -16,11 +16,24 @@ roulette mode for randomized practice runs.
 
 ## Running locally
 
-This is a static site, but it should be served through a local web server so
-browser module imports and JSON fetches work correctly.
+The public list is seeded from the repository JSON files. Accounts, profiles,
+submissions, and moderation data live in Neon Postgres, so the same data works
+locally and on Vercel. This project does not use Firebase.
+
+Create a free Neon database through Vercel's **Storage** page, then create a
+local `.env` file from `.env.example`. It needs:
+
+- `DATABASE_URL` — the pooled Neon connection string.
+- `AUTH_SECRET` — a unique, random secret at least 32 characters long. Create
+  one with `node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"`.
+- `BOOTSTRAP_ADMIN_EMAIL` — your real email address, only while registering
+  your first administrator account.
+
+Never commit `.env`, a database URL, or an `AUTH_SECRET`.
 
 ```bash
-python -m http.server 8000
+npm.cmd install
+npm.cmd start
 ```
 
 Then open:
@@ -28,6 +41,61 @@ Then open:
 ```text
 http://127.0.0.1:8000
 ```
+
+On first API request, the server securely creates the required Postgres tables
+and imports the list data. Register an account using the exact bootstrap email;
+that account receives the `admin` role. Remove `BOOTSTRAP_ADMIN_EMAIL` after an
+administrator exists. Existing admins can then manage `user`, `moderator`, and
+`admin` roles in the Admin panel.
+
+## Deploying on Vercel
+
+1. Push the source code to GitHub. Do not push `.env` or database credentials.
+2. In Vercel, import the repository as a project.
+3. Open **Storage** (or **Integrations**) in that Vercel project and create a
+   free Neon Postgres database. Vercel can add `DATABASE_URL` automatically.
+4. In **Project Settings → Environment Variables**, add a strong `AUTH_SECRET`
+   and your real `BOOTSTRAP_ADMIN_EMAIL`. Add both to Production, Preview, and
+   Development as appropriate.
+5. Deploy, visit the site, and register using the bootstrap email. Then remove
+   `BOOTSTRAP_ADMIN_EMAIL` from Vercel and redeploy.
+
+Vercel serves the site files and routes `/api/*` requests to the serverless
+handler at `api/[...path].js`. Neon stores all user data; it is never placed in
+the GitHub repository.
+
+For a local PowerShell session, temporary environment variables also work:
+
+```powershell
+$env:DATABASE_URL = 'your-neon-connection-string'
+$env:AUTH_SECRET = 'your-random-secret'
+$env:BOOTSTRAP_ADMIN_EMAIL = 'owner@example.com'
+npm.cmd start
+```
+
+## Application system
+
+- Passwords use Node's `scrypt` with a unique salt. Sessions are signed,
+  HTTP-only, `SameSite=Lax` cookies (and are `Secure` in production).
+- All writes are validated on the server; moderator and admin endpoints are
+  checked server-side on every request.
+- The server imports listed levels and records from `data/_list.json` at
+  startup. When an account's username or verified player identity matches an
+  imported record, the completion is automatically linked to its profile.
+- Approved run submissions become verified completions immediately; approved
+  level submissions become active list entries immediately. Both are served
+  through `/api/levels` and `/api/leaderboard`.
+
+Run the API integration check with:
+
+```powershell
+$env:TEST_DATABASE_URL = 'a separate Neon test database URL'
+npm.cmd run test:api
+```
+
+The test is skipped when `TEST_DATABASE_URL` is not supplied. Use a separate
+Neon database or branch for tests because the workflow creates test accounts
+and submissions.
 
 ## Editing list data (in forked repos etc.)
 

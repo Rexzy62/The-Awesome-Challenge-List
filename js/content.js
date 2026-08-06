@@ -39,6 +39,15 @@ async function fetchJson(path) {
 
 export async function fetchList() {
     try {
+        const apiList = await fetchJson('/api/levels');
+        if (Array.isArray(apiList?.levels)) {
+            return apiList.levels.map((level) => [normalizeLevel(level, level.path), null]);
+        }
+    } catch {
+        // Static hosting remains supported; fall back to the repository JSON files.
+    }
+
+    try {
         const list = await fetchJson(`${dir}/_list.json`);
         if (!Array.isArray(list)) {
             throw new Error("_list.json must contain an array.");
@@ -74,6 +83,15 @@ export async function fetchEditors() {
 }
 
 export async function fetchLeaderboard() {
+    try {
+        const response = await fetchJson('/api/leaderboard');
+        if (Array.isArray(response?.leaderboard)) {
+            return [response.leaderboard, []];
+        }
+    } catch {
+        // Static hosting retains the original client-side leaderboard.
+    }
+
     const list = await fetchList();
     if (!list) {
         return [[], ['_list']];

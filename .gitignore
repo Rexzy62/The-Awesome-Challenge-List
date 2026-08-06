@@ -5,3 +5,8 @@ deno.json
 node_modules/
 __pycache__/
 *.py[cod]
+data/tacl.sqlite
+data/tacl.sqlite-*
+data/.auth-secret
+.env
+.env.local
