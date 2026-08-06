@@ -18,6 +18,7 @@ const scrypt = promisify(scryptCallback);
 const loginAttempts = new Map();
 const databaseContext = new AsyncLocalStorage();
 let databaseInitialized = false;
+const schemaLockId = 2_037_291_405;
 
 // Vercel may run a Node version without a browser-compatible WebSocket global.
 // Neon uses WebSockets for the interactive transactions used by approvals.
@@ -374,9 +375,7 @@ async function migrateAndImportList() {
     const slugs = json(readFileSync(join(dataDirectory, '_list.json'), 'utf8'));
     const stamp = now();
 
-    await db.exec('BEGIN');
-    try {
-        for (const [index, slug] of slugs.entries()) {
+    for (const [index, slug] of slugs.entries()) {
             const level = json(readFileSync(join(dataDirectory, `${slug}.json`), 'utf8'), null);
             if (!level || typeof level !== 'object') {
                 continue;
@@ -430,11 +429,6 @@ async function migrateAndImportList() {
                     stamp,
                 );
             }
-        }
-        await db.exec('COMMIT');
-    } catch (error) {
-        await db.exec('ROLLBACK');
-        throw error;
     }
 }
 
@@ -901,8 +895,21 @@ async function withDatabase(callback) {
     try {
         return await databaseContext.run(database, async () => {
             if (!databaseInitialized) {
-                await migrateAndImportList();
-                databaseInitialized = true;
+                // Multiple Vercel instances can receive their first request at
+                // once. PostgreSQL's CREATE TABLE IF NOT EXISTS still races in
+                // that situation, so serialize schema setup across instances.
+                await db.exec('BEGIN');
+                try {
+                    // Use a transaction-scoped lock: DATABASE_URL uses Neon's
+                    // PgBouncer pooler, where session-scoped locks are unsafe.
+                    await db.prepare('SELECT pg_advisory_xact_lock(?)').get(schemaLockId);
+                    await migrateAndImportList();
+                    await db.exec('COMMIT');
+                    databaseInitialized = true;
+                } catch (error) {
+                    await db.exec('ROLLBACK');
+                    throw error;
+                }
             }
             return callback();
         });
