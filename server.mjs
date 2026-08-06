@@ -158,7 +158,7 @@ function sendJson(response, status, value, headers = {}) {
 
 function sendError(response, error) {
     const status = error instanceof ApiError ? error.status : 500;
-    if (!(error instanceof ApiError)) {
+    if (!(error instanceof ApiError) || status >= 500) {
         console.error(error);
     }
     sendJson(response, status, { error: error instanceof ApiError ? error.message : 'An unexpected server error occurred.' });
@@ -205,7 +205,9 @@ function assertTrustedOrigin(request) {
 }
 
 function limit(request, bucket, maxAttempts = 12, windowMs = 15 * 60 * 1000) {
-    const key = `${bucket}:${request.socket.remoteAddress || 'unknown'}`;
+    const forwardedFor = String(request.headers['x-forwarded-for'] || '').split(',')[0].trim();
+    const address = forwardedFor || request.socket?.remoteAddress || 'unknown';
+    const key = `${bucket}:${address}`;
     const cutoff = Date.now() - windowMs;
     const entries = (loginAttempts.get(key) || []).filter((time) => time > cutoff);
     if (entries.length >= maxAttempts) {
@@ -614,6 +616,9 @@ async function ownSubmissions(userId) {
 }
 
 async function register(request, response) {
+    // Verify this before opening a transaction. Otherwise a missing secret
+    // would create an account and then fail while signing its session cookie.
+    authSecret();
     assertTrustedOrigin(request);
     limit(request, 'register', 6);
     const body = await readJsonBody(request);
@@ -644,6 +649,7 @@ async function register(request, response) {
 }
 
 async function login(request, response) {
+    authSecret();
     assertTrustedOrigin(request);
     limit(request, 'login');
     const body = await readJsonBody(request);
