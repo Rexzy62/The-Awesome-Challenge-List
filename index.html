@@ -84,7 +84,7 @@
                     <a class="nav__icon" href="https://discord.gg/bGdP4F2nKu" target="_blank" rel="noopener noreferrer" aria-label="Join the Discord">
                         <img src="/assets/discord.svg" alt="Discord Logo" />
                     </a>
-                    <router-link v-if="store.user" class="nav__cta type-label-lg" to="/account">
+                    <router-link v-if="store.user" class="nav__cta type-label-lg" :to="'/players/' + store.user.username">
                         {{ store.user.displayName || store.user.username }}
                     </router-link>
                     <router-link v-else class="nav__cta type-label-lg" to="/account">

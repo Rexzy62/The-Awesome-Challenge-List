@@ -46,10 +46,8 @@ export default {
                             <td class="total">
                                 <p class="type-label-lg">{{ localize(ientry.total) }}</p>
                             </td>
-                            <td class="user" :class="{ 'active': entry?.user === ientry.user }">
-                                <button @click="selectedUser = ientry.user">
-                                    <span class="type-label-lg">{{ ientry.user }}</span>
-                                </button>
+                            <td class="user">
+                                <router-link class="type-label-lg" :to="'/players/' + ientry.user">{{ ientry.user }}</router-link>
                             </td>
                         </tr>
                     </table>
